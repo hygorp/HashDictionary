@@ -1,6 +1,7 @@
 <?php
     include './Core/Core.php';
     $POST = $_POST;
+    $Core = new Core();
 ?>
 <html>
 <head>
@@ -17,12 +18,10 @@
             <?php
                 if($POST) {
                     if (isset($POST['send-encrypt'])) {
-                        if (empty($POST['word-encrypt'])) {
+                        if (empty($POST['word-encrypt'])){
                             echo "<p style='color: red'>Type a Word!!!!<p></p>";
-                        } else {
-                            $Core = new Core();
-                            $word = $POST['word-encrypt'];
-
+                        } else{
+                            $word = strtolower($POST['word-encrypt']);
                             for ($i = 0; $i < strlen($word); $i++) {
                                 for ($j = 0; $j < count($Core->hashAlphabet); $j++) {
                                     if (md5($word[$i]) == $Core->hashAlphabet[$j]) {
@@ -41,14 +40,21 @@
         <form method="post">
             <label for="word-decrypt">Type a Hash: </label>
             <input type="text" id="word-decrypt" name="word-decrypt">
-            <button type="submit" name="send-decrypt">DeCr</button>
+            <button type="submit" name="send-decrypt">DeCrYpt</button>
             <?php
                 if($POST){
                     if(isset($POST['send-decrypt'])){
                         if(empty($POST['word-decrypt'])){
                             echo "<p style='color: red'>Type a Word!!!!<p></p>";
                         }else{
-                            //code here
+                            $word = strtolower($POST['word-decrypt']);
+                            for($i = 0; $i < strlen($word); $i++){
+                                for($j = 0; $j < count($Core->alphabet); $j++){
+                                    if($word == $Core->hashAlphabet[$j]){
+                                        echo $Core->alphabet[$j];
+                                    }
+                                }
+                            }
                         }
                     }
                 }
